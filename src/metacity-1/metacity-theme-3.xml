@@ -11,7 +11,7 @@
 <!-- meaningful constants -->
 
 <constant name="C_titlebar_focused" value="gtk:custom(wm_bg,gtk:bg[NORMAL])"/>
-<constant name="C_titlebar_unfocused" value="gtk:custom(wm_unfocused_bg,gtk:bg[NORMAL])"/>
+<constant name="C_titlebar_unfocused" value="gtk:custom(wm_bg,gtk:bg[NORMAL])"/>
 <constant name="C_highlight_focused" value="gtk:custom(wm_highlight,gtk:base[NORMAL])"/>
 <constant name="C_highlight_unfocused" value="gtk:custom(wm_highlight,gtk:base[NORMAL])"/>
 <constant name="C_title_focused" value="gtk:custom(wm_title,gtk:fg[NORMAL])"/>
@@ -83,11 +83,11 @@
 
 <draw_ops name="title_focused">
   <title version="< 3.1"
-    x="(0 `max` ((width - title_width) / 2))"
+    x="0"
     y="(0 `max` ((height - title_height) / 2))"
     color="C_title_focused"/>
   <title version=">= 3.1"
-    x="(0 `max` ((frame_x_center - title_width / 2) `min` (width - title_width)))"
+    x="0"
     y="(0 `max` ((height - title_height) / 2))"
     ellipsize_width="width"
     color="C_title_focused"/>
@@ -95,11 +95,11 @@
 
 <draw_ops name="title_unfocused">
   <title version="< 3.1"
-    x="(0 `max` ((width - title_width) / 2))"
+    x="0"
     y="(0 `max` ((height - title_height) / 2))"
     color="C_title_unfocused"/>
   <title version=">= 3.1"
-    x="(0 `max` ((frame_x_center - title_width / 2) `min` (width - title_width)))"
+    x="0"
     y="(0 `max` ((height - title_height) / 2))"
     ellipsize_width="width"
     color="C_title_unfocused"/>
@@ -496,10 +496,10 @@
   <piece position="titlebar" draw_ops="entire_background_unfocused"/>
 </frame_style>
 
-<frame_style name="dialog_focused" geometry="nobuttons" parent="normal_focused">
+<frame_style name="dialog_focused" geometry="modal" parent="normal_focused">
 </frame_style>
 
-<frame_style name="dialog_unfocused" geometry="nobuttons" parent="normal_unfocused">
+<frame_style name="dialog_unfocused" geometry="modal" parent="normal_unfocused">
 </frame_style>
 
 <frame_style name="modal_dialog_focused" geometry="modal" parent="normal_focused">

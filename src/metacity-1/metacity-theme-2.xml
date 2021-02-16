@@ -83,14 +83,14 @@
 
 <draw_ops name="title_focused">
   <title
-    x="(0 `max` ((width - title_width) / 2))"
+    x="0"
     y="(0 `max` ((height - title_height) / 2))"
     color="C_title_focused"/>
 </draw_ops>
 
 <draw_ops name="title_unfocused">
   <title
-    x="(0 `max` ((width - title_width) / 2))"
+    x="0"
     y="(0 `max` ((height - title_height) / 2))"
     color="C_title_unfocused"/>
 </draw_ops>
@@ -480,10 +480,10 @@
   <piece position="titlebar" draw_ops="entire_background_unfocused"/>
 </frame_style>
 
-<frame_style name="dialog_focused" geometry="nobuttons" parent="normal_focused">
+<frame_style name="dialog_focused" geometry="modal" parent="normal_focused">
 </frame_style>
 
-<frame_style name="dialog_unfocused" geometry="nobuttons" parent="normal_unfocused">
+<frame_style name="dialog_unfocused" geometry="modal" parent="normal_unfocused">
 </frame_style>
 
 <frame_style name="modal_dialog_focused" geometry="modal" parent="normal_focused">
