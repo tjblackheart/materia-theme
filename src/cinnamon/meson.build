@@ -27,29 +27,25 @@ foreach theme: themes
   #
 
   cinnamon_scss_conf = configuration_data()
-  cinnamon_scss_conf.set('variant', theme['scss_variant'])
-  cinnamon_scss_conf.set('topbar', theme['scss_topbar'])
+  cinnamon_scss_conf.set('dark_theme', theme['scss_dark_theme'])
+  cinnamon_scss_conf.set('light_topbar', theme['scss_light_topbar'])
   cinnamon_scss_conf.set('compact', theme['scss_compact'])
+  cinnamon_scss_conf.set('current_source_dir', meson.current_source_dir())
+
+  cinnamon_temp_name = '@0@.cinnamon'.format(theme['name'])
 
   # Configure SCSS file
   cinnamon_scss = configure_file(
     input: 'cinnamon.scss.in',
-    output: 'cinnamon.@0@.scss'.format(theme['name']),
+    output: '@0@.scss'.format(cinnamon_temp_name),
     configuration: cinnamon_scss_conf,
-  )
-
-  # Copy it from build dir to source dir
-  run_command(
-    'cp',
-    cinnamon_scss,
-    meson.current_source_dir(),
   )
 
   # Generate CSS file
   cinnamon_css = custom_target(
-    'cinnamon.@0@.css'.format(theme['name']),
-    input: 'cinnamon.@0@.scss'.format(theme['name']),
-    output: 'cinnamon.@0@.css'.format(theme['name']),
+    '@0@.css'.format(cinnamon_temp_name),
+    input: cinnamon_scss,
+    output: '@0@.css'.format(cinnamon_temp_name),
     command: [sassc, sassc_opts, '@INPUT@', '@OUTPUT@'],
     depend_files: cinnamon_scss_depend_files,
     build_by_default: true,
@@ -57,7 +53,7 @@ foreach theme: themes
 
   # Install it while renaming to a valid name
   meson.add_install_script(
-    'sh', '-c', 'cp "@0@" "@1@"'.format(
+    sh, '-c', 'cp "@0@" "@1@"'.format(
       cinnamon_css.full_path(),
       join_paths('$MESON_INSTALL_DESTDIR_PREFIX', cinnamon_dir, 'cinnamon.css'),
     ),

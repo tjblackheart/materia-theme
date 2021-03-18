@@ -518,10 +518,16 @@ StScrollView {
   }
 }
 .workspace-close-button, .window-close {
-  background-image: url(assets/close-window.svg);
+  background-image: url(assets/window-close.svg);
   height: 32px;
   width: 32px;
   -cinnamon-close-overlap: 20px;
+  &:hover {
+    background-image: url(assets/window-close-hover.svg);
+  }
+  &:active {
+    background-image: url(assets/window-close-active.svg);
+  }
   &:rtl {
     -st-background-image-shadow: 2px 2px 6px rgba(0,0,0,0.5);
   }
@@ -684,7 +690,7 @@ StScrollView {
 }
 // notification system
 #notification {
-  background-color: $surface;
+  background-color: $surface-z8;
   border-radius: $corner-radius;
   border: 1px solid divider($on-surface);
   padding: 8px;
@@ -693,7 +699,7 @@ StScrollView {
   margin-from-right-edge-of-screen: 20px;
   width: 34em;
   color: $on-surface;
-  box-shadow: $shadow-2;
+  box-shadow: $shadow-z4;
   &.multi-line-notification {
     padding-bottom: 8px;
   }
@@ -955,9 +961,9 @@ StScrollView {
   -arrow-base: 0;
   -arrow-rise: 0;
   -boxpointer-gap: 5px;
-  background-color: $background;
+  background-color: $surface-z8;
   border-radius: $corner-radius;
-  box-shadow: $shadow-2;
+  box-shadow: $shadow-z4;
 }
 // main menu applet
 .menu-favorites-box {
@@ -1102,12 +1108,12 @@ StScrollView {
 }
 // cinnamon 3.8 will support an improved window-list-thumbnail preview which now has it's own selector
 .window-list-preview {
-  background-color: $surface;
+  background-color: $surface-z8;
   border-radius: $corner-radius;
   padding: 10px 15px;
   spacing: 1em;
   color: $on-surface;
-  box-shadow: $shadow-4;
+  box-shadow: $shadow-z8;
 }
 // Cinnamon 4.0 has a new grouped window list applet with it's own selectors.
 // Initial theme support is defined here. Some theming is defined in the panel orientation specific section above.
@@ -1233,7 +1239,7 @@ StScrollView {
   background: rgba(0,0,0,0.2);
 }
 .sound-player-overlay {
-  background-color: $surface;
+  background-color: $surface-z8;
   min-width: 300px;
   padding: 12px 16px;
   spacing: 0.5em;
@@ -1298,7 +1304,7 @@ StScrollView {
   background: divider($on-titlebar);
 }
 .applet-spacer:highlight {
-  background: highlight($surface);
+  background: highlight($surface-z8);
 }
 .applet-box {
   background-color: rgba(0, 0, 0, 0.01);
@@ -1343,7 +1349,7 @@ StScrollView {
   
   color: $on-titlebar;
   border: none;
-  box-shadow: $shadow-4;
+  box-shadow: $shadow-z8;
   padding: 12px;
   background-color: $scrim-alt;
   border-radius: $corner-radius
@@ -1353,41 +1359,41 @@ StScrollView {
   @extend %desklet-shared;
   @include type(caption);
 
-  background-color: $surface;
+  background-color: $surface-z8;
   border-radius: $corner-radius;
   &:highlight {
-    background-color: highlight($surface);
+    background-color: highlight($surface-z8);
   }
 }
 .desklet-with-borders-and-header {
   @extend %desklet-shared;
   @include type(caption);
   
-  background-color: $surface;
+  background-color: $surface-z8;
   border-radius-bottomleft: 2px;
   border-radius-bottomright: 2px;
   &:highlight {
-    background-color: highlight($surface);
+    background-color: highlight($surface-z8);
   }
 }
 .desklet-header {
   @include type(headline6);
   @extend %desklet-shared;
 
-  background-color: $surface;
+  background-color: $surface-z8;
   border-radius-topleft: 2px;
   border-radius-topright: 2px;
   &:highlight {
-    background-color: highlight($surface);
+    background-color: highlight($surface-z8);
   }
 }
 .photoframe-box {
   @extend %desklet-shared;
   
-  background-color: $surface;
+  background-color: $surface-z8;
   border-radius: $corner-radius;
   &:highlight {
-    background-color: highlight($surface);
+    background-color: highlight($surface-z8);
   }
 }
 .desklet-drag-placeholder {

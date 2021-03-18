@@ -24,17 +24,17 @@
   }
 
   &.panel-menu {
-    -boxpointer-gap: 4px; // distance from the panel
+    -boxpointer-gap: 0; // distance from the panel
     margin-bottom: 1.75em;
   }
 }
 
 .popup-menu-content {
-  margin: 5px 8px 8px;
+  margin: 8px;
   padding: 8px 0;
   border-radius: $corner-radius;
-  box-shadow: $shadow-2;
-  background-color: $surface;
+  box-shadow: $shadow-z4;
+  background-color: $surface-z8;
   color: $on-surface;
 }
 
@@ -79,11 +79,11 @@
     font-weight: normal;
 
     &.selected {
-      background-color: overlay("hover", $primary, $background: $overlay-selected);
+      background-color: overlay("hover", $primary, $on: $overlay-selected);
     }
 
     &:active {
-      background-color: overlay("pressed", $primary, $background: $overlay-selected);
+      background-color: overlay("pressed", $primary, $on: $overlay-selected);
     }
   }
 

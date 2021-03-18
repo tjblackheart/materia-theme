@@ -1,26 +1,35 @@
 gnome_shell = find_program('gnome-shell', required: false)
 
 if get_option('gnome_shell_version') != ''
-  gnome_shell_version = get_option('gnome_shell_version')
+  gnome_shell_full_version = get_option('gnome_shell_version')
+elif gnome_shell.found()
+  gnome_shell_full_version = run_command(gnome_shell, '--version').stdout().split()[-1]
 else
-  if gnome_shell.found()
-    gnome_shell_version_array = run_command([gnome_shell, '--version']).stdout().split('\n')[0].split(' ')[-1].strip().split('.')
-
-    if gnome_shell_version_array[1].to_int().is_even()
-      gnome_shell_version = '.'.join([gnome_shell_version_array[0], gnome_shell_version_array[1]])
-    else
-      gnome_shell_version = '.'.join([gnome_shell_version_array[0], (gnome_shell_version_array[1].to_int() + 1).to_string()])
-    endif
-  else
-    message('gnome-shell not found, using styles for last gnome-shell version availible')
-    gnome_shell_version = '3.36'
-  endif
+  message('gnome-shell not found, using styles for last gnome-shell version availible')
+  gnome_shell_full_version = '3.38'
 endif
+
+gnome_shell_version_array = gnome_shell_full_version.split('.')
+if gnome_shell_version_array[0].version_compare('>= 40')
+  gnome_shell_version = gnome_shell_version_array[0]
+elif gnome_shell_version_array[1].to_int().is_even()
+  gnome_shell_version = gnome_shell_version_array[0] + '.' + gnome_shell_version_array[1]
+else
+  gnome_shell_version = gnome_shell_version_array[0] + '.' + (gnome_shell_version_array[1].to_int() + 1).to_string()
+endif
+message('Set GNOME Shell version to ' + gnome_shell_version)
 
 gnome_shell_scss_depend_files = files([
   '../_color-palette.scss',
   '../_colors.scss',
   '../_variables.scss',
+  'sass/components/base/_base.scss',
+  'sass/components/base/_button.scss',
+  'sass/components/base/_check-box.scss',
+  'sass/components/base/_entry.scss',
+  'sass/components/base/_scrollbar.scss',
+  'sass/components/base/_slider.scss',
+  'sass/components/base/_switch.scss',
   'sass/components/dialog/_dialog.scss',
   'sass/components/dialog/_network-dialog.scss',
   'sass/components/gdm/_login-dialog.scss',
@@ -48,13 +57,6 @@ gnome_shell_scss_depend_files = files([
   'sass/components/overview/_workspace-switcher.scss',
   'sass/components/panel/_panel.scss',
   'sass/components/panel/_ripple-box.scss',
-  'sass/components/_base.scss',
-  'sass/components/_button.scss',
-  'sass/components/_check-box.scss',
-  'sass/components/_entry.scss',
-  'sass/components/_scrollbar.scss',
-  'sass/components/_slider.scss',
-  'sass/components/_switch.scss',
   'sass/_components.scss',
   'sass/_drawing.scss',
   'sass/_extensions.scss',
@@ -102,30 +104,26 @@ foreach theme: themes
   #
 
   gnome_shell_scss_conf = configuration_data()
-  gnome_shell_scss_conf.set('variant', theme['scss_variant'])
-  gnome_shell_scss_conf.set('topbar', theme['scss_topbar'])
+  gnome_shell_scss_conf.set('dark_theme', theme['scss_dark_theme'])
+  gnome_shell_scss_conf.set('light_topbar', theme['scss_light_topbar'])
   gnome_shell_scss_conf.set('compact', theme['scss_compact'])
   gnome_shell_scss_conf.set('version', gnome_shell_version)
+  gnome_shell_scss_conf.set('current_source_dir', meson.current_source_dir())
+
+  gnome_shell_temp_name = '@0@.gnome-shell'.format(theme['name'])
 
   # Configure SCSS file
   gnome_shell_scss = configure_file(
     input: 'gnome-shell.scss.in',
-    output: 'gnome-shell.@0@.scss'.format(theme['name']),
+    output: '@0@.scss'.format(gnome_shell_temp_name),
     configuration: gnome_shell_scss_conf,
-  )
-
-  # Copy it from build dir to source dir
-  run_command(
-    'cp',
-    gnome_shell_scss,
-    meson.current_source_dir(),
   )
 
   # Generate CSS file
   gnome_shell_css = custom_target(
-    'gnome-shell.@0@.css'.format(theme['name']),
-    input: 'gnome-shell.@0@.scss'.format(theme['name']),
-    output: 'gnome-shell.@0@.css'.format(theme['name']),
+    '@0@.css'.format(gnome_shell_temp_name),
+    input: gnome_shell_scss,
+    output: '@0@.css'.format(gnome_shell_temp_name),
     command: [sassc, sassc_opts, '@INPUT@', '@OUTPUT@'],
     depend_files: gnome_shell_scss_depend_files,
     build_by_default: true,
@@ -133,7 +131,7 @@ foreach theme: themes
 
   # Install it while renaming to a valid name
   meson.add_install_script(
-    'sh', '-c', 'cp "@0@" "@1@"'.format(
+    sh, '-c', 'cp "@0@" "@1@"'.format(
       gnome_shell_css.full_path(),
       join_paths('$MESON_INSTALL_DESTDIR_PREFIX', gnome_shell_dir, 'gnome-shell.css'),
     ),
