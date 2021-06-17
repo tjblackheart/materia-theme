@@ -1,4 +1,2 @@
-$dark-theme: true;
-
-@import '../../colors';
-@import '../sass/scrollbars';
+@use "../../theme" with ($dark-theme: true);
+@use "../sass/scrollbars";

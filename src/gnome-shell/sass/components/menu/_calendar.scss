@@ -1,12 +1,17 @@
 /* Date/Time Menu */
 
-$calendar-column-spacing: 8px;
-$calendar-column-margin: 0 8px;
+@use "../../../../theme";
+@use "../../../../theme-color";
+@use "../../gnome-shell";
+@use "../../typography";
 
-%calendar-item {
+$column-spacing: 8px;
+$column-margin: 0 8px;
+
+@mixin item {
   margin: 0;
   border: 0;
-  border-radius: $corner-radius;
+  border-radius: theme.$corner-radius;
 
   &,
   &:focus,
@@ -18,29 +23,20 @@ $calendar-column-margin: 0 8px;
     color: inherit;
     text-shadow: none;
     icon-shadow: none;
-    transition-duration: $duration;
+    transition-duration: theme.$state-duration;
   }
 
   &:focus {
-    background-color: overlay("focus", $on-surface);
+    background-color: theme-color.focus-overlay(theme-color.$on-surface);
   }
 
   &:hover {
-    background-color: overlay("hover", $on-surface);
+    background-color: theme-color.hover-overlay(theme-color.$on-surface);
   }
 
   &:active {
-    background-color: overlay("pressed", $on-surface);
-    transition-duration: $duration-ripple;
-  }
-}
-
-.clock-display-box {
-  spacing: 0;
-
-  .clock {
-    padding-left: $panel-button-hpadding;
-    padding-right: $panel-button-hpadding;
+    background-color: theme-color.pressed-overlay(theme-color.$on-surface);
+    transition-duration: theme.$ripple-duration;
   }
 }
 
@@ -51,9 +47,9 @@ $calendar-column-margin: 0 8px;
 
 // Calendar menu side column
 .datemenu-calendar-column {
-  spacing: $calendar-column-spacing;
+  spacing: $column-spacing;
   padding: 0;
-  border: 0 solid divider($on-surface);
+  border: 0 solid theme-color.divider(theme-color.$on-surface);
 
   &:ltr {
     margin-right: 0;
@@ -70,24 +66,24 @@ $calendar-column-margin: 0 8px;
   }
 
   .datemenu-displays-box {
-    spacing: $calendar-column-spacing;
-    margin: $calendar-column-margin;
+    spacing: $column-spacing;
+    margin: $column-margin;
   }
 }
 
 .events-section-title {
-  @extend %calendar-item;
-  min-height: $menuitem-size - 8px * 2;
+  @include item;
+  min-height: theme.$menu-item-height - 8px * 2;
   padding: 8px;
-  color: hint($on-surface) !important;
+  color: theme-color.hint(theme-color.$on-surface) !important;
   font-weight: bold;
 }
 
 /* today button (the date) */
 .datemenu-today-button {
-  @extend %calendar-item;
-  margin: $calendar-column-margin;
-  min-height: $menuitem-size * 2 - 8px * 2;
+  @include item;
+  margin: $column-margin;
+  min-height: theme.$menu-item-height * 2 - 8px * 2;
   padding: 8px;
 
   // weekday label
@@ -98,35 +94,35 @@ $calendar-column-margin: 0 8px;
 
   // date label
   .date-label {
-    @include type(headline5);
+    @include typography.headline5;
   }
 }
 
 /* Calendar */
 .calendar {
-  @extend %calendar-item;
-  margin: $calendar-column-margin;
+  @include item;
+  margin: $column-margin;
   margin-bottom: 0;
   padding: 0;
 
   // month
   .calendar-month-label {
-    transition-duration: $duration;
-    min-height: $menuitem-size - 6px * 2;
+    transition-duration: theme.$state-duration;
+    min-height: theme.$menu-item-height - 6px * 2;
     margin: 2px;
     padding: 6px 8px;
-    border-radius: $corner-radius;
+    border-radius: theme.$corner-radius;
     color: inherit;
     font-weight: bold;
     text-align: center;
 
     &:focus {
-      background-color: overlay("focus", $on-surface);
+      background-color: theme-color.focus-overlay(theme-color.$on-surface);
     }
   }
 
   // prev/next month icons
-  @if $version >= 3.32 {
+  @if gnome-shell.$version >= 3.32 {
     .calendar-change-month-back StIcon,
     .calendar-change-month-forward StIcon {
       icon-size: 16px;
@@ -150,77 +146,77 @@ $calendar-column-margin: 0 8px;
   }
 
   .pager-button {
-    transition-duration: $duration;
-    width: $menuitem-size;
-    height: $menuitem-size;
+    transition-duration: theme.$state-duration;
+    width: theme.$menu-item-height;
+    height: theme.$menu-item-height;
     margin: 2px;
-    border-radius: $menuitem-size / 2;
+    border-radius: theme.$menu-item-height / 2;
     background-color: transparent;
-    color: hint($on-surface);
+    color: theme-color.hint(theme-color.$on-surface);
 
     &:focus {
-      background-color: overlay("focus", $on-surface);
+      background-color: theme-color.focus-overlay(theme-color.$on-surface);
     }
 
     &:hover {
-      background-color: overlay("hover", $on-surface);
+      background-color: theme-color.hover-overlay(theme-color.$on-surface);
     }
 
     &:active {
-      background-color: overlay("pressed", $on-surface);
-      transition-duration: $duration-ripple;
+      background-color: theme-color.pressed-overlay(theme-color.$on-surface);
+      transition-duration: theme.$ripple-duration;
     }
   }
 
   .calendar-day-base {
-    transition-duration: $duration;
-    width: $menuitem-size;
-    height: $menuitem-size;
+    transition-duration: theme.$state-duration;
+    width: theme.$menu-item-height;
+    height: theme.$menu-item-height;
     margin: 2px;
     padding: 0;
     border: 0;
-    border-radius: $menuitem-size / 2;
-    @include type(caption);
+    border-radius: theme.$menu-item-height / 2;
+    @include typography.caption;
     font-feature-settings: "tnum";
     text-align: center;
 
     &:focus {
-      background-color: overlay("focus", $on-surface);
+      background-color: theme-color.focus-overlay(theme-color.$on-surface);
     }
 
     &:hover {
-      background-color: overlay("hover", $on-surface);
+      background-color: theme-color.hover-overlay(theme-color.$on-surface);
     }
 
     &:active {
-      transition-duration: $duration-ripple;
+      transition-duration: theme.$ripple-duration;
       border-color: transparent;
-      background-color: overlay("pressed", $on-surface);
+      background-color: theme-color.pressed-overlay(theme-color.$on-surface);
       color: inherit;
     }
 
     &:selected {
       border-color: transparent;
-      background-color: $primary !important;
-      color: $on-primary !important;
+      background-color: theme-color.$primary !important;
+      color: theme-color.$on-primary !important;
       font-weight: 500 !important;
     }
 
     // day of week heading
     &.calendar-day-heading {
-      width: $menuitem-size;
-      height: $menuitem-size - 7px;
+      width: theme.$menu-item-height;
+      height: theme.$menu-item-height - 7px;
       margin-top: 2px;
       padding: 7px 0 0;
-      border-radius: $menuitem-size / 2;
+      border-radius: theme.$menu-item-height / 2;
       background-color: transparent;
-      color: disabled($on-surface);
-      @include type(caption);
+      color: theme-color.disabled(theme-color.$on-surface);
+      @include typography.caption;
       font-weight: bold;
       text-align: center;
 
       &:focus {
-        background-color: overlay("focus", $on-surface);
+        background-color: theme-color.focus-overlay(theme-color.$on-surface);
       }
     }
   }
@@ -248,18 +244,18 @@ $calendar-column-margin: 0 8px;
   // Today
   .calendar-today {
     border: 0;
-    box-shadow: inset 0 0 0 1px hint($on-surface);
-    background-color: rgba($surface-z8, .01); // to draw box-shadow
+    box-shadow: inset 0 0 0 1px theme-color.hint(theme-color.$on-surface);
+    background-color: rgba(theme-color.$surface-z8, .01); // to draw box-shadow
     color: inherit;
     font-weight: normal;
 
     &:focus {
-      background-color: overlay("focus", $on-surface);
+      background-color: theme-color.focus-overlay(theme-color.$on-surface);
       color: inherit;
     }
 
     &:hover {
-      background-color: overlay("hover", $on-surface);
+      background-color: theme-color.hover-overlay(theme-color.$on-surface);
       color: inherit;
     }
 
@@ -267,7 +263,7 @@ $calendar-column-margin: 0 8px;
       &,
       &:hover,
       &:focus {
-        background-color: overlay("pressed", $on-surface);
+        background-color: theme-color.pressed-overlay(theme-color.$on-surface);
         color: inherit;
       }
     }
@@ -278,8 +274,8 @@ $calendar-column-margin: 0 8px;
       &,
       &:hover,
       &:focus {
-        background-color: $primary;
-        color: $on-primary;
+        background-color: theme-color.$primary;
+        color: theme-color.$on-primary;
       }
     }
   }
@@ -295,32 +291,32 @@ $calendar-column-margin: 0 8px;
   }
 
   .calendar-other-month-day {
-    color: disabled-hint($on-surface) !important;
+    color: theme-color.disabled-hint(theme-color.$on-surface) !important;
   }
 
   .calendar-week-number {
-    width: $menuitem-size;
-    height: $menuitem-size;
+    width: theme.$menu-item-height;
+    height: theme.$menu-item-height;
     margin: 2px;
-    border-radius: $menuitem-size / 2;
+    border-radius: theme.$menu-item-height / 2;
     background-color: transparent;
-    color: disabled($on-surface);
+    color: theme-color.disabled(theme-color.$on-surface);
     font-weight: bold;
     font-size: 1em;
     text-align: center;
 
-    @if $version <= 3.36 {
-      height: $menuitem-size - 7px;
+    @if gnome-shell.$version < 3.38 {
+      height: theme.$menu-item-height - 7px;
       padding: 7px 0 0;
     }
   }
 }
 
-@if $version >= 3.38 {
+@if gnome-shell.$version >= 3.38 {
   /* Events */
   .events-button {
-    @extend %calendar-item;
-    min-height: $menuitem-size * 2 - 8px * 2;
+    @include item;
+    min-height: theme.$menu-item-height * 2 - 8px * 2;
     padding: 8px;
 
     .events-box {
@@ -332,14 +328,14 @@ $calendar-column-margin: 0 8px;
     }
 
     .events-title {
-      color: hint($on-surface);
+      color: theme-color.hint(theme-color.$on-surface);
       font-weight: bold;
       margin-bottom: 0;
     }
 
     .event-time {
-      color: hint($on-surface);
-      @include type(caption);
+      color: theme-color.hint(theme-color.$on-surface);
+      @include typography.caption;
       font-feature-settings: "tnum";
     }
   }
@@ -347,8 +343,8 @@ $calendar-column-margin: 0 8px;
 
 /* World clocks */
 .world-clocks-button {
-  @extend %calendar-item;
-  min-height: $menuitem-size - 8px * 2;
+  @include item;
+  min-height: theme.$menu-item-height - 8px * 2;
   padding: 8px;
 
   .world-clocks-grid {
@@ -358,7 +354,7 @@ $calendar-column-margin: 0 8px;
 
   // title
   .world-clocks-header {
-    color: hint($on-surface);
+    color: theme-color.hint(theme-color.$on-surface);
     font-weight: bold;
   }
 
@@ -371,7 +367,7 @@ $calendar-column-margin: 0 8px;
 
   // timezone time
   .world-clocks-time {
-    color: hint($on-surface);
+    color: theme-color.hint(theme-color.$on-surface);
     font-weight: normal;
     font-size: 1em;
     font-feature-settings: "tnum";
@@ -388,7 +384,7 @@ $calendar-column-margin: 0 8px;
 
   // timezone offset label
   .world-clocks-timezone {
-    color: disabled($on-surface);
+    color: theme-color.disabled(theme-color.$on-surface);
     font-size: 1em;
     font-feature-settings: "tnum";
   }
@@ -396,8 +392,8 @@ $calendar-column-margin: 0 8px;
 
 /* Weather */
 .weather-button {
-  @extend %calendar-item;
-  min-height: $menuitem-size * 2 - 8px * 2;
+  @include item;
+  min-height: theme.$menu-item-height * 2 - 8px * 2;
   padding: 8px;
 
   .weather-box {
@@ -409,7 +405,7 @@ $calendar-column-margin: 0 8px;
   }
 
   .weather-header {
-    color: hint($on-surface);
+    color: theme-color.hint(theme-color.$on-surface);
     font-weight: bold;
 
     &.location {
@@ -426,8 +422,8 @@ $calendar-column-margin: 0 8px;
   .weather-forecast-time {
     padding-top: 0;
     padding-bottom: 0;
-    color: hint($on-surface);
-    @include type(caption);
+    color: theme-color.hint(theme-color.$on-surface);
+    @include typography.caption;
     font-feature-settings: "tnum";
   }
 

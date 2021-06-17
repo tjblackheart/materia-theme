@@ -15,27 +15,29 @@ if gtk4_version_array[1].to_int().is_even()
 else
   gtk4_version = gtk4_version_array[0] + '.' + (gtk4_version_array[1].to_int() + 1).to_string()
 endif
-message('Set GTK 4 version to ' + gtk4_version)
+message('Set gtk4 version to ' + gtk4_version)
 
 gtk4_scss_depend_files = files([
   '../_color-palette.scss',
-  '../_colors.scss',
-  '../_variables.scss',
-  '../gtk-3.0/sass/_colors-public.scss',
+  '../_shadow.scss',
+  '../_theme.scss',
+  '../_theme-color.scss',
+  '../gtk-3.0/sass/_public-colors.scss',
   'sass/_common.scss',
   'sass/_drawing.scss',
+  'sass/_gtk.scss',
 ])
 
 foreach theme: themes
   gtk4_dir = join_paths(theme['dir'], 'gtk-4.0')
 
   gtk4_variants = [
-    '',
+    'gtk',
   ]
 
   # Only non-dark themes need a dark variant.
   if theme['color'] != '-dark'
-    gtk4_variants += '-dark'
+    gtk4_variants += 'gtk-dark'
   endif
 
   install_subdir(
@@ -60,11 +62,11 @@ foreach theme: themes
   gtk4_scss_conf.set('current_source_dir', meson.current_source_dir())
 
   foreach gtk4_variant: gtk4_variants
-    gtk4_temp_name = '@0@.gtk@1@'.format(theme['name'], gtk4_variant)
+    gtk4_temp_name = '@0@.gtk4.@1@'.format(theme['name'], gtk4_variant)
 
     # Configure SCSS file
     gtk4_scss = configure_file(
-      input: 'gtk@0@.scss.in'.format(gtk4_variant),
+      input: '@0@.scss.in'.format(gtk4_variant),
       output: '@0@.scss'.format(gtk4_temp_name),
       configuration: gtk4_scss_conf,
     )
@@ -74,7 +76,7 @@ foreach theme: themes
       '@0@.css'.format(gtk4_temp_name),
       input: gtk4_scss,
       output: '@0@.css'.format(gtk4_temp_name),
-      command: [sassc, sassc_opts, '@INPUT@', '@OUTPUT@'],
+      command: [sass, sass_opts, '@INPUT@', '@OUTPUT@'],
       depend_files: gtk4_scss_depend_files,
       build_by_default: true,
     )
@@ -83,7 +85,7 @@ foreach theme: themes
     meson.add_install_script(
       sh, '-c', 'cp "@0@" "@1@"'.format(
         gtk4_css.full_path(),
-        join_paths('$MESON_INSTALL_DESTDIR_PREFIX', gtk4_dir, 'gtk@0@.css'.format(gtk4_variant)),
+        join_paths('$MESON_INSTALL_DESTDIR_PREFIX', gtk4_dir, '@0@.css'.format(gtk4_variant)),
       ),
     )
   endforeach

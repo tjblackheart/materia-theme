@@ -1,16 +1,19 @@
 /* Check Boxes */
 
+@use "../../../../theme";
+@use "../../../../theme-color";
+
 .check-box {
   StBoxLayout {
     spacing: 8px;
   }
 
   StBin {
-    transition-duration: $duration;
+    transition-duration: theme.$state-duration;
     width: 24px;
     height: 24px;
-    padding: ($medium-size - 24px) / 2;
-    border-radius: $medium-size / 2;
+    padding: (theme.$medium-size - 24px) / 2;
+    border-radius: theme.$medium-size / 2;
   }
 
   StBin,
@@ -19,16 +22,16 @@
   }
 
   &:focus StBin {
-    background-color: overlay("focus", $on-surface);
+    background-color: theme-color.focus-overlay(theme-color.$on-surface);
   }
 
   &:hover StBin {
-    background-color: overlay("hover", $on-surface);
+    background-color: theme-color.hover-overlay(theme-color.$on-surface);
   }
 
   &:active StBin {
-    transition-duration: $duration-ripple;
-    background-color: overlay("pressed", $on-surface);
+    transition-duration: theme.$ripple-duration;
+    background-color: theme-color.pressed-overlay(theme-color.$on-surface);
   }
 
   &:checked StBin,
@@ -37,14 +40,14 @@
   }
 
   &:checked:focus StBin {
-    background-color: overlay("focus", $primary);
+    background-color: theme-color.focus-overlay(theme-color.$primary);
   }
 
   &:checked:hover StBin {
-    background-color: overlay("hover", $primary);
+    background-color: theme-color.hover-overlay(theme-color.$primary);
   }
 
   &:checked:active StBin {
-    background-color: overlay("pressed", $primary);
+    background-color: theme-color.pressed-overlay(theme-color.$primary);
   }
 }

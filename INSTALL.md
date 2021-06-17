@@ -4,8 +4,13 @@
 
 Materia requires the following build and runtime dependencies:
 
+#### Build dependencies
+
 - `meson` >= 0.47.0
-- `sassc`
+- `dart-sass` >= 1.23.0 (or `npm` if the former is not found)
+
+#### Runtime dependencies
+
 - `gnome-themes-extra` (or `gnome-themes-standard` for older distributions)
 - Murrine engine — The package name depends on the distro:
   - `gtk-engine-murrine` on Arch Linux
@@ -22,10 +27,15 @@ git clone https://github.com/nana-4/materia-theme
 cd materia-theme
 ```
 
-2. Configure and install it using Meson:
+2. Configure the project using Meson (you can optionally set build options [as below](#build-options)):
 
 ```sh
 meson _build
+```
+
+3. Build and install it using Meson:
+
+```sh
 meson install -C _build
 ```
 
@@ -34,9 +44,10 @@ meson install -C _build
 Option | Default Value | Description
 --- | --- | ---
 `prefix` | `/usr` | Installation prefix
-`colors` | `default,light,dark` | Choose color variant(s)
-`sizes` | `default,compact` | Choose size variant(s)
-`gnome_shell_version` | n/a (auto) | Manually set gnome-shell version
+`colors` | `default,light,dark` | List of color variants to build
+`sizes` | `default,compact` | List of size variants to build
+`gnome_shell_version` | n/a (auto) | Build GNOME Shell theme for specific version
+`gtk4_version` | n/a (auto) | Build GTK 4 theme for specific version
 
 Build options can be set at the configuration time, for example:
 
@@ -44,15 +55,7 @@ Build options can be set at the configuration time, for example:
 meson _build -Dprefix="$HOME/.local" -Dcolors=default,dark -Dsizes=compact
 ```
 
-## Installation for older distributions
-
-If you can't use Meson `>= 0.47.0`, you can use `./install.sh` instead:
-
-```sh
-sudo ./install.sh
-```
-
-For installation options, run: `./install.sh --help`
+> Note: If you are a package maintainer, you should always set `gnome_shell_version` and `gtk4_version` in your package script based on the `gnome-shell` and `gtk4` package versions in your distribution. Otherwise, the corresponding themes may be built for wrong versions.
 
 ## Uninstallation
 

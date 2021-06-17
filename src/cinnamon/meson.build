@@ -1,12 +1,12 @@
 cinnamon_scss_depend_files = files([
   '../_color-palette.scss',
-  '../_colors.scss',
-  '../_variables.scss',
+  '../_shadow.scss',
+  '../_theme.scss',
+  '../_theme-color.scss',
   '../gnome-shell/sass/_drawing.scss',
-  '../gnome-shell/sass/_variables.scss',
+  '../gnome-shell/sass/_typography.scss',
   'sass/_common.scss',
   'sass/_extends.scss',
-  'sass/_over-rides.scss',
 ])
 
 foreach theme: themes
@@ -46,7 +46,7 @@ foreach theme: themes
     '@0@.css'.format(cinnamon_temp_name),
     input: cinnamon_scss,
     output: '@0@.css'.format(cinnamon_temp_name),
-    command: [sassc, sassc_opts, '@INPUT@', '@OUTPUT@'],
+    command: [sass, sass_opts, '@INPUT@', '@OUTPUT@'],
     depend_files: cinnamon_scss_depend_files,
     build_by_default: true,
   )

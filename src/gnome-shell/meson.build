@@ -17,12 +17,13 @@ elif gnome_shell_version_array[1].to_int().is_even()
 else
   gnome_shell_version = gnome_shell_version_array[0] + '.' + (gnome_shell_version_array[1].to_int() + 1).to_string()
 endif
-message('Set GNOME Shell version to ' + gnome_shell_version)
+message('Set gnome-shell version to ' + gnome_shell_version)
 
 gnome_shell_scss_depend_files = files([
   '../_color-palette.scss',
-  '../_colors.scss',
-  '../_variables.scss',
+  '../_shadow.scss',
+  '../_theme.scss',
+  '../_theme-color.scss',
   'sass/components/base/_base.scss',
   'sass/components/base/_button.scss',
   'sass/components/base/_check-box.scss',
@@ -54,13 +55,14 @@ gnome_shell_scss_depend_files = files([
   'sass/components/overview/_search-entry.scss',
   'sass/components/overview/_search-results.scss',
   'sass/components/overview/_window-picker.scss',
-  'sass/components/overview/_workspace-switcher.scss',
+  'sass/components/overview/_workspace-thumbnails.scss',
   'sass/components/panel/_panel.scss',
   'sass/components/panel/_ripple-box.scss',
-  'sass/_components.scss',
+  'sass/components/_index.scss',
   'sass/_drawing.scss',
   'sass/_extensions.scss',
-  'sass/_variables.scss',
+  'sass/_gnome-shell.scss',
+  'sass/_typography.scss',
 ])
 
 foreach theme: themes
@@ -90,7 +92,7 @@ foreach theme: themes
 
   install_data(
     [
-      'README.md',
+      'gnome-shell-start.svg',
       'gnome-shell-theme.gresource.xml',
       'noise-texture.png',
       'pad-osd.css',
@@ -124,7 +126,7 @@ foreach theme: themes
     '@0@.css'.format(gnome_shell_temp_name),
     input: gnome_shell_scss,
     output: '@0@.css'.format(gnome_shell_temp_name),
-    command: [sassc, sassc_opts, '@INPUT@', '@OUTPUT@'],
+    command: [sass, sass_opts, '@INPUT@', '@OUTPUT@'],
     depend_files: gnome_shell_scss_depend_files,
     build_by_default: true,
   )

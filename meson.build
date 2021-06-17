@@ -1,6 +1,6 @@
 project(
   'materia-theme',
-  version: '20200916',
+  version: '20210322',
   license: 'GPLv2+',
   meson_version: '>= 0.47.0',
   default_options: ['prefix=/usr'],
@@ -9,10 +9,29 @@ project(
 theme_base_name = get_option('theme_name')
 theme_base_dir = join_paths(get_option('datadir'), 'themes', theme_base_name)
 
-sassc = find_program('sassc')
-sassc_opts = ['-M', '-t', 'expanded']
+# Avoid printing 'Program sh found' multiple times
+# if meson version is >= 0.55.0
+if meson.version().version_compare('>= 0.55.0')
+  sh = find_program('sh')
+else
+  sh = 'sh'
+endif
 
-sh = find_program('sh')
+sass = find_program('sass', required: false)
+sass_opts = ['--no-source-map']
+
+if sass.found()
+  sass_full_version = run_command(sass, '--version').stdout()
+  sass_is_ruby_sass = sass_full_version.contains('Ruby Sass')
+  sass_has_module_system = sass_full_version.version_compare('>= 1.23.0')
+endif
+
+if not sass.found() or sass_is_ruby_sass or not sass_has_module_system
+  message('dart-sass >= 1.23.0 not found, installing it locally via npm')
+  npm = find_program('npm')
+  run_command(npm, 'install')
+  sass = find_program('./node_modules/.bin/sass')
+endif
 
 themes = []
 foreach color: get_option('colors')
@@ -38,7 +57,10 @@ endforeach
 
 foreach theme: themes
   install_data(
-    'COPYING',
+    [
+      'COPYING',
+      'INSTALL_GDM_THEME.md',
+    ],
     install_dir: theme['dir'],
   )
 endforeach

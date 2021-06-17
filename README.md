@@ -67,8 +67,6 @@ Ubuntu 18.04 or later | `materia-gtk-theme` | [Link](https://packages.ubuntu.com
 
 > NOTE: Distro packages could be outdated and incompatible with your desktop environment. You can check the latest version [here](https://github.com/nana-4/materia-theme/releases).
 
-> **Warning for Ubuntu 19.04 & 19.10 users:** Ubuntu 19.04 (disco) & 19.10 (eoan) packages are very outdated and incompatible with their GNOME versions. If you're using GNOME on Ubuntu 19.04 or 19.10, [manual installation](#manual-installation) is highly recommended.
-
 ### Flatpak
 
 All 6 variants are available via Flathub:
@@ -99,7 +97,7 @@ To improve the appearance of Chrome, you can install our Chrome extensions as fo
 ### GDM Theme
 
 You can change the GDM (lock/login screen) theme by replacing the default GNOME Shell theme.  
-See [`gnome-shell/README.md`](src/gnome-shell/README.md) for details.
+See [`INSTALL_GDM_THEME.md`](INSTALL_GDM_THEME.md) for details.
 
 ## Customization
 
@@ -131,7 +129,7 @@ Materia is distributed under the terms of the GNU General Public License, versio
 - The included symbolic icons are based on [Material Design icons](https://github.com/google/material-design-icons) by Google.
 - The Chrome scrollbar extension was forked from [Adwaita-chrome-scrollbar](https://github.com/gnome-integration-team/chrome-gnome-scrollbar) by GNOME Integration Team.
 - Yauhen Kirylau (@actionless) who is oomox author polished scripts and supported Materia with [oomox](https://github.com/themix-project/oomox).
-- @n3oxmind who helped improve the installation script.
+- @n3oxmind who helped improve the installation script we had.
 - @smurphos who made and provided the Cinnamon theme for Materia.
 - Our Meson code is heavily influenced by @monday15's [lounge-gtk-theme](https://github.com/monday15/lounge-gtk-theme).
 
